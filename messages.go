@@ -85,13 +85,6 @@ type Xmlszamla struct {
 	VevoPostazasiCim       string `xml:"vevo>postazasiCim,omitempty"`       // Customer mail address line
 	VevoAzonosito          string `xml:"vevo>azonosito,omitempty"`          // Customer unique ID
 
-	VevoFokonyvKonyvelesDatum string `xml:"vevo>vevoFokonyv>konyvelesDatum,omitempty"`
-	VevoFokonyvVevoAzonosito  string `xml:"vevo>vevoFokonyv>vevoAzonosito,omitempty"`
-	VevoFokonyvFokonyviSzam   string `xml:"vevo>vevoFokonyv>vevoFokonyviSzam,omitempty"`
-	VevoFokonyvFolyamatostelj bool   `xml:"vevo>vevoFokonyv>folyamatosTelj,omitempty"`
-	VevoFokonyvElszDatumTol   string `xml:"vevo>vevoFokonyv>elszDatumTol,omitempty"`
-	VevoFokonyvElszDatumIg    string `xml:"vevo>vevoFokonyv>elszDatumIg,omitempty"`
-
 	VevoAlairoNeve  string `xml:"vevo>alairoNeve,omitempty"`  // Name of signer at customer (undocumented)
 	VevoTelefonszam string `xml:"vevo>telefonszam,omitempty"` // Customer phone number
 	VevoMegjegyzes  string `xml:"vevo>megjegyzes,omitempty"`  // Customer comment
