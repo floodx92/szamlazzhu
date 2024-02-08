@@ -18,6 +18,7 @@ type stringContainer struct {
 // Xmlszamla describes the request of creating new invoices
 type Xmlszamla struct {
 	XMLName Empty `xml:"http://www.szamlazz.hu/xmlszamla xmlszamla"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmlszamla xmlszamla"`
 
 	// Authentication (Username+Password or AgentKey required)
 
@@ -36,9 +37,9 @@ type Xmlszamla struct {
 	Cikkazoninvoice bool   `xml:"beallitasok>cikkazoninvoice,omitempty"` // Display item identifiers on invoice (undocumented)
 	SzamlaKulsoAzon string `xml:"beallitasok>szamlaKulsoAzon,omitempty"` // External reference for query-back
 
-	KeltDatum              Date    `xml:"fejlec>keltDatum,omitempty"`              // Date of creation (YYYY-MM-DD)
-	TeljesitesDatum        Date    `xml:"fejlec>teljesitesDatum"`                  // Date of fullfillment (YYYY-MM-DD)
-	FizetesiHataridoDatum  Date    `xml:"fejlec>fizetesiHataridoDatum"`            // Payment deadline (YYYY-MM-DD)
+	KeltDatum              string  `xml:"fejlec>keltDatum,omitempty"`              // Date of creation (YYYY-MM-DD)
+	TeljesitesDatum        string  `xml:"fejlec>teljesitesDatum"`                  // Date of fullfillment (YYYY-MM-DD)
+	FizetesiHataridoDatum  string  `xml:"fejlec>fizetesiHataridoDatum"`            // Payment deadline (YYYY-MM-DD)
 	FizMod                 string  `xml:"fejlec>fizmod"`                           // Payment type
 	Penznem                string  `xml:"fejlec>penznem"`                          // Currency
 	SzamlaNyelve           string  `xml:"fejlec>szamlaNyelve"`                     // Language (hu/en/de/it/ro/sk/hr)
@@ -86,12 +87,12 @@ type Xmlszamla struct {
 	VevoPostazasiCim       string `xml:"vevo>postazasiCim,omitempty"`       // Customer mail address line
 	VevoAzonosito          string `xml:"vevo>azonosito,omitempty"`          // Customer unique ID
 
-	VevoFokonyvKonyvelesDatum Date   `xml:"vevo>vevoFokonyv>konyvelesDatum,omitempty"`
+	VevoFokonyvKonyvelesDatum string `xml:"vevo>vevoFokonyv>konyvelesDatum,omitempty"`
 	VevoFokonyvVevoAzonosito  string `xml:"vevo>vevoFokonyv>vevoAzonosito,omitempty"`
 	VevoFokonyvFokonyviSzam   string `xml:"vevo>vevoFokonyv>vevoFokonyviSzam,omitempty"`
 	VevoFokonyvFolyamatostelj bool   `xml:"vevo>vevoFokonyv>folyamatosTelj,omitempty"`
-	VevoFokonyvElszDatumTol   Date   `xml:"vevo>vevoFokonyv>elszDatumTol,omitempty"`
-	VevoFokonyvElszDatumIg    Date   `xml:"vevo>vevoFokonyv>elszDatumIg,omitempty"`
+	VevoFokonyvElszDatumTol   string `xml:"vevo>vevoFokonyv>elszDatumTol,omitempty"`
+	VevoFokonyvElszDatumIg    string `xml:"vevo>vevoFokonyv>elszDatumIg,omitempty"`
 
 	VevoAlairoNeve  string `xml:"vevo>alairoNeve,omitempty"`  // Name of signer at customer (undocumented)
 	VevoTelefonszam string `xml:"vevo>telefonszam,omitempty"` // Customer phone number
@@ -122,13 +123,13 @@ type XmlszamlaTetel struct {
 	FokonyvGazdasagiEsemAfa      string `xml:"tetelFokonyv>gazdasagiEsemAfa,omitempty"`
 	FokonyvArbevetelFokonyviSzam string `xml:"tetelFokonyv>arbevetelFokonyviSzam,omitempty"`
 	FokonyvAfaFokonyviSzam       string `xml:"tetelFokonyv>afaFokonyviSzam,omitempty"`
-	FokonyvElszDatumTol          Date   `xml:"tetelFokonyv>elszDatumTol,omitempty"`
-	FokonyvElszDatumIg           Date   `xml:"tetelFokonyv>elszDatumIg,omitempty"`
+	FokonyvElszDatumTol          string `xml:"tetelFokonyv>elszDatumTol,omitempty"`
+	FokonyvElszDatumIg           string `xml:"tetelFokonyv>elszDatumIg,omitempty"`
 }
 
 // Xmlszamlavalasz describes the response of creating new invoices
 type Xmlszamlavalasz struct {
-	XMLName      Empty   `xml:"http://www.szamlazz.hu/xmlszamlavalasz xmlszamlavalasz"`
+	XMLName      Empty   `xml:"https://www.szamlazz.hu/xmlszamlavalasz xmlszamlavalasz"`
 	Sikeres      bool    `xml:"sikeres"`
 	Hibakod      int     `xml:"hibakod,omitempty"` // Note: this is string in the original XSD, parse it as int anyway
 	Hibauzenet   string  `xml:"hibauzenet,omitempty"`
@@ -142,7 +143,7 @@ type Xmlszamlavalasz struct {
 
 // Xmlszamlast describes the request of reversing invoices
 type Xmlszamlast struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/xmlszamlast xmlszamlast"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmlszamlast xmlszamlast"`
 
 	Felhasznalo      string `xml:"beallitasok>felhasznalo,omitempty"`
 	Jelszo           string `xml:"beallitasok>jelszo,omitempty"`
@@ -155,8 +156,8 @@ type Xmlszamlast struct {
 	ValaszVerzio   uint `xml:"beallitasok>valaszVerzio"`   // Format of reply. 1: mixed 2: xml-encapsulated
 
 	Szamlaszam      string `xml:"fejlec>szamlaszam"`                // To be reversed invoice number
-	KeltDatum       Date   `xml:"fejlec>keltDatum,omitempty"`       // Date of creation (YYYY-MM-DD)
-	TeljesitesDatum Date   `xml:"fejlec>teljesitesDatum,omitempty"` // Date of fullfillment (YYYY-MM-DD)
+	KeltDatum       string `xml:"fejlec>keltDatum,omitempty"`       // Date of creation (YYYY-MM-DD)
+	TeljesitesDatum string `xml:"fejlec>teljesitesDatum,omitempty"` // Date of fullfillment (YYYY-MM-DD)
 	Tipus           string `xml:"fejlec>tipus,omitempty"`           // Type of reversal. Must be SS
 	SzamlaSablon    string `xml:"fejlec>szamlaSablon,omitempty"`    // Invoice format (SzlaMost/SzlaAlap/SzlaNoEnv/Szla8cm/SzlaTomb)
 
@@ -169,7 +170,7 @@ type Xmlszamlast struct {
 
 // Xmlszamlakifiz describes the request of updating payment statuses
 type Xmlszamlakifiz struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/xmlszamlakifiz xmlszamlakifiz"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmlszamlakifiz xmlszamlakifiz"`
 
 	// Authentication (Username+Password or AgentKey required)
 	Felhasznalo      string `xml:"beallitasok>felhasznalo"`      // API user
@@ -184,7 +185,7 @@ type Xmlszamlakifiz struct {
 
 // XmlszamlakifizKifizetes describes a line item within an xmlszalakifiz
 type XmlszamlakifizKifizetes struct {
-	Datum  Date    `xml:"datum"`  // Date of creation (YYYY-MM-DD)
+	Datum  string  `xml:"datum"`  // Date of creation (YYYY-MM-DD)
 	Jogcim string  `xml:"jogcim"` // Method Of Payment (cash, credit card, etc)
 	Osszeg float64 `xml:"osszeg"` // Net value
 	Leiras string  `xml:"leiras"` // Description
@@ -192,7 +193,7 @@ type XmlszamlakifizKifizetes struct {
 
 // Xmlszamlapdf describes the request for downloading PDF invoices
 type Xmlszamlapdf struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/xmlszamlapdf xmlszamlapdf"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmlszamlapdf xmlszamlapdf"`
 
 	// Authentication (Username+Password or AgentKey required)
 	Felhasznalo      string `xml:"felhasznalo,omitempty"`
@@ -208,7 +209,7 @@ type Xmlszamlapdf struct {
 
 // Xmlszamlaxml describes the request of downloading invoice data
 type Xmlszamlaxml struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/xmlszamlaxml xmlszamlaxml"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmlszamlaxml xmlszamlaxml"`
 
 	// Authentication (Username+Password or AgentKey required)
 	Felhasznalo      string `xml:"felhasznalo,omitempty"`
@@ -222,7 +223,7 @@ type Xmlszamlaxml struct {
 
 // Szamla describes the response of downloading invoice data
 type Szamla struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/szamla szamla"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/szamla szamla"`
 
 	SzallitoId                int    `xml:"szallito>id"`
 	SzallitoNev               string `xml:"szallito>nev"`
@@ -247,9 +248,9 @@ type Szamla struct {
 	AlapEszamla       int     `xml:"alap>eszamla"`
 	AlapHivszamlaszam string  `xml:"alap>hivszamlaszam,omitempty"`
 	AlapHivdijbekszam string  `xml:"alap>hivdijbekszam,omitempty"`
-	AlapKelt          Date    `xml:"alap>kelt"`
-	AlapTelj          Date    `xml:"alap>telj"`
-	AlapFizh          Date    `xml:"alap>fizh"`
+	AlapKelt          string  `xml:"alap>kelt"`
+	AlapTelj          string  `xml:"alap>telj"`
+	AlapFizh          string  `xml:"alap>fizh"`
 	AlapFizmod        string  `xml:"alap>fizmod"`
 	AlapFizmodunified string  `xml:"alap>fizmodunified"` // ENUM: átutalás, készpénz, bankkártya, csekk, utánvét, ajándékutalvány, barion, barter, csoportos beszedés, OTP Simple, kompenzáció, kupon, PayPal, PayU, SZÉP kártya, utalvány, egyéb
 	AlapKeszpenz      bool    `xml:"alap>keszpenz"`
@@ -282,10 +283,10 @@ type Szamla struct {
 
 	VevoFokonyvVevo           string `xml:"vevo>fokonyv>vevo,omitempty"`
 	VevoFokonyvVevoazon       string `xml:"vevo>fokonyv>vevoazon,omitempty"`
-	VevoFokonyvDatum          Date   `xml:"vevo>fokonyv>datum,omitempty"`
+	VevoFokonyvDatum          string `xml:"vevo>fokonyv>datum,omitempty"`
 	VevoFokonyvFolyamatostelj bool   `xml:"vevo>fokonyv>folyamatostelj,omitempty"`
-	VevoFokonyvElszDatTol     Date   `xml:"vevo>fokonyv>elszDatTol,omitempty"`
-	VevoFokonyvElszDatIg      Date   `xml:"vevo>fokonyv>elszDatIg,omitempty"`
+	VevoFokonyvElszDatTol     string `xml:"vevo>fokonyv>elszDatTol,omitempty"`
+	VevoFokonyvElszDatIg      string `xml:"vevo>fokonyv>elszDatIg,omitempty"`
 
 	Tetelek []SzamlaTetel `xml:"tetelek>tetel"`
 
@@ -318,8 +319,8 @@ type SzamlaTetel struct {
 	FokonyvAfa                 string `xml:"fokonyv>afa,omitempty"`
 	FokonyvGazdasagiesemeny    string `xml:"fokonyv>gazdasagiesemeny,omitempty"`
 	FokonyvGazdasagiesemenyafa string `xml:"fokonyv>gazdasagiesemenyafa,omitempty"`
-	FokonyvElszdattol          Date   `xml:"fokonyv>elszdattol,omitempty"`
-	FokonyvElszdatig           Date   `xml:"fokonyv>elszdatig,omitempty"`
+	FokonyvElszdattol          string `xml:"fokonyv>elszdattol,omitempty"`
+	FokonyvElszdatig           string `xml:"fokonyv>elszdatig,omitempty"`
 }
 
 // SzamlaAfakulcsossz describes a summary for a VAT key within Szamla
@@ -333,7 +334,7 @@ type SzamlaAfakulcsossz struct {
 
 // SzamlaKifizetesek describes a payment item within Szamla
 type SzamlaKifizetes struct {
-	Datum          Date    `xml:"datum"`
+	Datum          string  `xml:"datum"`
 	Jogcim         string  `xml:"jogcim"`
 	Osszeg         float64 `xml:"osszeg"`
 	Megjegyzes     string  `xml:"megjegyzes,omitempty"`
@@ -344,7 +345,7 @@ type SzamlaKifizetes struct {
 
 // Xmlszamladbkdel describes the request of deleting proforma invoices
 type Xmlszamladbkdel struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/xmlszamladbkdel xmlszamladbkdel"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmlszamladbkdel xmlszamladbkdel"`
 
 	Felhasznalo      string `xml:"beallitasok>felhasznalo,omitempty"`
 	Jelszo           string `xml:"beallitasok>jelszo,omitempty"`
@@ -356,7 +357,7 @@ type Xmlszamladbkdel struct {
 
 // Xmlszamladbkdelvalasz describes the response of deleting proforma invoices
 type Xmlszamladbkdelvalasz struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/xmlszamladbkdelvalasz xmlszamladbkdelvalasz"` // sic!
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmlszamladbkdelvalasz xmlszamladbkdelvalasz"` // sic!
 
 	Sikeres    bool   `xml:"sikeres"`
 	Hibakod    int    `xml:"hibakod,omitempty"`
@@ -365,7 +366,7 @@ type Xmlszamladbkdelvalasz struct {
 
 // Xmlnyugtacreate describes the request of creating receipts
 type Xmlnyugtacreate struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/xmlnyugtacreate xmlnyugtacreate"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmlnyugtacreate xmlnyugtacreate"`
 
 	Felhasznalo      string `xml:"beallitasok>felhasznalo,omitempty"`
 	Jelszo           string `xml:"beallitasok>jelszo,omitempty"`
@@ -412,7 +413,7 @@ type XmlnyugtacreateKifizetes struct {
 
 // Xmlnyugtavalasz describes the response of creating receipts
 type Xmlnyugtavalasz struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/xmlnyugtavalasz xmlnyugtavalasz"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmlnyugtavalasz xmlnyugtavalasz"`
 
 	Sikeres    bool   `xml:"sikeres"`
 	Hibakod    int    `xml:"hibakod,omitempty"`
@@ -426,7 +427,7 @@ type Xmlnyugtavalasz struct {
 	Tipus                string  `xml:"nyugta>alap>tipus"`
 	Stornozott           bool    `xml:"nyugta>alap>stornozott"`
 	StronozottNyugtaszam string  `xml:"nyugta>alap>stornozottNyugtaszam"`
-	Kelt                 Date    `xml:"nyugta>alap>kelt"`
+	Kelt                 string  `xml:"nyugta>alap>kelt"`
 	Fizmod               string  `xml:"nyugta>alap>fizmod"`
 	Penznem              string  `xml:"nyugta>alap>penznem"`
 	Devizaarf            float64 `xml:"nyugta>alap>devizaarf,omitempty"`
@@ -480,7 +481,7 @@ type XmlnyugtavalaszAfakulcsossz struct {
 
 // Xmlnyugtast describes the request of reversing receipts
 type Xmlnyugtast struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/xmlnyugtast xmlnyugtast"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmlnyugtast xmlnyugtast"`
 
 	Felhasznalo      string `xml:"beallitasok>felhasznalo,omitempty"`
 	Jelszo           string `xml:"beallitasok>jelszo,omitempty"`
@@ -494,7 +495,7 @@ type Xmlnyugtast struct {
 
 // Xmlnyugtaget describes the request of downloading receipts
 type Xmlnyugtaget struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/xmlnyugtaget xmlnyugtaget"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmlnyugtaget xmlnyugtaget"`
 
 	Felhasznalo      string `xml:"beallitasok>felhasznalo,omitempty"`
 	Jelszo           string `xml:"beallitasok>jelszo,omitempty"`
@@ -508,7 +509,7 @@ type Xmlnyugtaget struct {
 
 // Xmlnyugtasend describes the request of sending receipts via email
 type Xmlnyugtasend struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/xmlnyugtasend xmlnyugtasend"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmlnyugtasend xmlnyugtasend"`
 
 	Felhasznalo      string `xml:"beallitasok>felhasznalo,omitempty"`
 	Jelszo           string `xml:"beallitasok>jelszo,omitempty"`
@@ -524,7 +525,7 @@ type Xmlnyugtasend struct {
 
 // Xmlnyugtasendvalasz describes the response of sending receipts via email
 type Xmlnyugtasendvalasz struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/xmlnyugtasendvalasz xmlnyugtasendvalasz"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmlnyugtasendvalasz xmlnyugtasendvalasz"`
 
 	Sikeres    bool   `xml:"sikeres"`
 	Hibakod    int    `xml:"hibakod,omitempty"`
@@ -533,7 +534,7 @@ type Xmlnyugtasendvalasz struct {
 
 // Xmltaxpayer describes the request for querying NAV taxpayer details
 type Xmltaxpayer struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/xmltaxpayer xmltaxpayer"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmltaxpayer xmltaxpayer"`
 
 	// Authentication (Username+Password or AgentKey required)
 
@@ -547,7 +548,7 @@ type Xmltaxpayer struct {
 // QueryTaxpayerResponse describes the response of querying NAV taxpayer details
 // Note: This is a partial implementation based on NAV schema
 type QueryTaxpayerResponse struct {
-	XMLName Empty `xml:"http://schemas.nav.gov.hu/OSA/3.0/api QueryTaxpayerResponse"`
+	XMLName Empty `xml:"https://schemas.nav.gov.hu/OSA/3.0/api QueryTaxpayerResponse"`
 
 	ResultFuncCode  string `xml:"result>funcCode"` // ENUM: OK, ERROR
 	ResultErrorCode string `xml:"result>errorCode,omitempty"`
@@ -584,7 +585,7 @@ type TaxpayerAddressItem struct {
 
 // xmlcegmb describes the request for registering a managed user account
 type Xmlcegmb struct {
-	XMLName Empty `xml:"http://www.szamlazz.hu/xmlcegmb XmlCegMb"`
+	XMLName Empty `xml:"https://www.szamlazz.hu/xmlcegmb XmlCegMb"`
 
 	LoginName        string `xml:"login>loginname"`        // API user
 	Password         string `xml:"login>password"`         // API password
