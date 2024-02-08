@@ -7,7 +7,7 @@ import (
 
 // Date implements date fields as go time.Time
 type Date struct {
-	Time time.Time
+	time.Time
 }
 
 // UnmarshalText unmarshals a date from "2006-01-02" format
@@ -33,34 +33,18 @@ func (d *Date) MarshalText() ([]byte, error) {
 	return []byte(s), nil
 }
 
-// UnmarshalXML overrides the default time.Time.UnmarshalXML
-func (d *Date) UnmarshalXML(decoder *xml.Decoder, start xml.StartElement) error {
-	// Decode the XML element content as a string
-	var s string
-	err := decoder.DecodeElement(&s, &start)
-	if err != nil {
-		return err
-	}
-
+// UnmarshalXMLAttr UnmarshalXML overrides the default time.Time.UnmarshalXML
+func (d *Date) UnmarshalXMLAttr(attr xml.Attr) error {
 	// Unmarshal the string as a Date
-	return d.UnmarshalText([]byte(s))
+	return d.UnmarshalText([]byte(attr.Value))
 }
 
-// MarshalXML overrides the default time.Time.MarshalXML
-func (d *Date) MarshalXML(encoder *xml.Encoder, start xml.StartElement) error {
-	// Format the date as a string in the "2006-01-02" format
-	if d.Time.IsZero() {
-		// If the date is zero, do not output anything.
-		return nil // Optionally, handle empty date representation as per your requirements
-	}
-	formattedDate := d.Time.Format("2006-01-02")
-
-	// Create a simple struct that represents the XML element content
-	type dateElement struct {
-		XMLName xml.Name
-		Date    string `xml:",chardata"`
+func (d *Date) MarshalXMLAttr(name xml.Name) (xml.Attr, error) {
+	dateString := d.Format("2006-01-02")
+	attr := xml.Attr{
+		Name:  name,
+		Value: dateString,
 	}
 
-	// Use the dateElement struct to marshal the date as XML element content
-	return encoder.EncodeElement(dateElement{XMLName: start.Name, Date: formattedDate}, start)
+	return attr, nil
 }
