@@ -35,23 +35,32 @@ func (d *Date) MarshalText() ([]byte, error) {
 
 // UnmarshalXML overrides the default time.Time.UnmarshalXML
 func (d *Date) UnmarshalXML(decoder *xml.Decoder, start xml.StartElement) error {
+	// Decode the XML element content as a string
 	var s string
 	err := decoder.DecodeElement(&s, &start)
 	if err != nil {
 		return err
 	}
+
+	// Unmarshal the string as a Date
 	return d.UnmarshalText([]byte(s))
 }
 
 // MarshalXML overrides the default time.Time.MarshalXML
 func (d *Date) MarshalXML(encoder *xml.Encoder, start xml.StartElement) error {
-	s, err := d.MarshalText()
-	if err != nil {
-		return err
+	// Format the date as a string in the "2006-01-02" format
+	if d.Time.IsZero() {
+		// If the date is zero, do not output anything.
+		return nil // Optionally, handle empty date representation as per your requirements
 	}
-	if len(s) == 0 {
-		return nil // Simulate `omitempty` by not encoding zero dates.
+	formattedDate := d.Time.Format("2006-01-02")
+
+	// Create a simple struct that represents the XML element content
+	type dateElement struct {
+		XMLName xml.Name
+		Date    string `xml:",chardata"`
 	}
-	var v = string(s)
-	return encoder.EncodeElement(&v, start)
+
+	// Use the dateElement struct to marshal the date as XML element content
+	return encoder.EncodeElement(dateElement{XMLName: start.Name, Date: formattedDate}, start)
 }
