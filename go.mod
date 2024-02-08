@@ -1,3 +1,3 @@
-module sixhz.com/szamlazzhu
+module github.com/floodx92/szamlazzhu
 
-go 1.17
+go 1.21

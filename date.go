@@ -7,10 +7,10 @@ import (
 
 // Date implements date fields as go time.Time
 type Date struct {
-	time.Time
+	Time time.Time
 }
 
-// UnmarshalText unmarshals from 2006-01-02 format
+// UnmarshalText unmarshals a date from "2006-01-02" format
 func (d *Date) UnmarshalText(text []byte) error {
 	if len(text) == 0 {
 		d.Time = time.Time{}
@@ -24,16 +24,16 @@ func (d *Date) UnmarshalText(text []byte) error {
 	return nil
 }
 
-// MarshalText marshals a Date from time.Time to 2006-01-02 format
+// MarshalText marshals a Date to "2006-01-02" format
 func (d *Date) MarshalText() ([]byte, error) {
 	if d.Time.IsZero() {
-		return []byte(""), nil
+		return []byte{}, nil // Return an empty byte slice to indicate no value.
 	}
 	s := d.Time.Format("2006-01-02")
 	return []byte(s), nil
 }
 
-// UnmarshalXML is a wrapper to override time.Time.UnmarshalXML with UnmarshalText
+// UnmarshalXML overrides the default time.Time.UnmarshalXML
 func (d *Date) UnmarshalXML(decoder *xml.Decoder, start xml.StartElement) error {
 	var s string
 	err := decoder.DecodeElement(&s, &start)
@@ -43,14 +43,15 @@ func (d *Date) UnmarshalXML(decoder *xml.Decoder, start xml.StartElement) error 
 	return d.UnmarshalText([]byte(s))
 }
 
-// MarshalXML is a wrapper to override time.Time.MarshalXML with MarshalText
+// MarshalXML overrides the default time.Time.MarshalXML
 func (d *Date) MarshalXML(encoder *xml.Encoder, start xml.StartElement) error {
 	s, err := d.MarshalText()
 	if err != nil {
 		return err
 	}
 	if len(s) == 0 {
-		return nil // ,omitempty-like behavior for dates.
+		return nil // Simulate `omitempty` by not encoding zero dates.
 	}
-	return encoder.EncodeElement(&s, start)
+	var v = string(s)
+	return encoder.EncodeElement(&v, start)
 }
