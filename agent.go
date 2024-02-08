@@ -16,7 +16,7 @@ import (
 )
 
 // Agent is an authenticated agent that can interact with the szamlazz.hu API endpoint
-// https://docs.szamlazz.hu
+// http://docs.szamlazz.hu
 type Agent struct {
 	// One of username+password or token is required. Other must be zero value
 	username string // Authentication username
@@ -53,7 +53,7 @@ func (a *Agent) init() {
 }
 
 // GenerateInvoice creates a new invoice (or other document)
-// https://docs.szamlazz.hu/#generating-invoices
+// http://docs.szamlazz.hu/#generating-invoices
 func (a *Agent) GenerateInvoice(req Xmlszamla) (Xmlszamlavalasz, error) {
 
 	// hardcoded fields
@@ -80,7 +80,7 @@ func (a *Agent) GenerateInvoice(req Xmlszamla) (Xmlszamlavalasz, error) {
 var stornoRegex = regexp.MustCompile(`^\s*xmlagentresponse=DONE;(.+?)\s*$`)
 
 // ReverseInvoice reverses an existing invoice and returns the reversing document number
-// https://docs.szamlazz.hu/#reversing-an-invoice-storno
+// http://docs.szamlazz.hu/#reversing-an-invoice-storno
 func (a *Agent) ReverseInvoice(req Xmlszamlast) (string, error) {
 
 	// hardcoded fields
@@ -105,7 +105,7 @@ func (a *Agent) ReverseInvoice(req Xmlszamlast) (string, error) {
 }
 
 // RegisterCredit updates payment entries for an invoice
-// https://docs.szamlazz.hu/#registering-a-credit-entry
+// http://docs.szamlazz.hu/#registering-a-credit-entry
 func (a *Agent) RegisterCredit(req Xmlszamlakifiz) error {
 
 	// hardcoded fields
@@ -129,7 +129,7 @@ func (a *Agent) RegisterCredit(req Xmlszamlakifiz) error {
 }
 
 // QueryInvoicePdf downloads the PDF representation of an invoice
-// https://docs.szamlazz.hu/#querying-the-invoice-pdf
+// http://docs.szamlazz.hu/#querying-the-invoice-pdf
 func (a *Agent) QueryInvoicePdf(req Xmlszamlapdf) (Xmlszamlavalasz, error) {
 
 	// hardcoded fields
@@ -154,7 +154,7 @@ func (a *Agent) QueryInvoicePdf(req Xmlszamlapdf) (Xmlszamlavalasz, error) {
 }
 
 // QueryInvoiceXml downloads invoice details
-// https://docs.szamlazz.hu/#querying-the-invoice-pdf
+// http://docs.szamlazz.hu/#querying-the-invoice-pdf
 func (a *Agent) QueryInvoiceXml(req Xmlszamlaxml) (Szamla, error) {
 
 	// hardcoded fields
@@ -173,7 +173,7 @@ func (a *Agent) QueryInvoiceXml(req Xmlszamlaxml) (Szamla, error) {
 }
 
 // DeleteProforma removes a proforma invoice (díjbekérő) from szamlazz.hu
-// https://docs.szamlazz.hu/#deleting-a-pro-forma-invoice
+// http://docs.szamlazz.hu/#deleting-a-pro-forma-invoice
 func (a *Agent) DeleteProforma(req Xmlszamladbkdel) (Xmlszamladbkdelvalasz, error) {
 
 	// hardcoded fields
@@ -197,7 +197,7 @@ func (a *Agent) DeleteProforma(req Xmlszamladbkdel) (Xmlszamladbkdelvalasz, erro
 }
 
 // GenerateReceipt creates a new receipt
-// https://docs.szamlazz.hu/#generating-a-receipt
+// http://docs.szamlazz.hu/#generating-a-receipt
 func (a *Agent) GenerateReceipt(req Xmlnyugtacreate) (Xmlnyugtavalasz, error) {
 
 	// hardcoded fields
@@ -227,7 +227,7 @@ func (a *Agent) StornoReceipt(req Xmlnyugtast) (Xmlnyugtavalasz, error) {
 }
 
 // ReverseReceipt reverses an existing receipt
-// https://docs.szamlazz.hu/#reversing-a-receipt-storno
+// http://docs.szamlazz.hu/#reversing-a-receipt-storno
 func (a *Agent) ReverseReceipt(req Xmlnyugtast) (Xmlnyugtavalasz, error) {
 
 	// hardcoded fields
@@ -251,7 +251,7 @@ func (a *Agent) ReverseReceipt(req Xmlnyugtast) (Xmlnyugtavalasz, error) {
 }
 
 // QueryReceipt downloads an existing receipt
-// https://docs.szamlazz.hu/#querying-a-receipt
+// http://docs.szamlazz.hu/#querying-a-receipt
 func (a *Agent) QueryReceipt(req Xmlnyugtaget) (Xmlnyugtavalasz, error) {
 
 	// hardcoded fields
@@ -275,7 +275,7 @@ func (a *Agent) QueryReceipt(req Xmlnyugtaget) (Xmlnyugtavalasz, error) {
 }
 
 // SendReceipt sends an existing receipt via e-mail
-// https://docs.szamlazz.hu/#sending-a-receipt
+// http://docs.szamlazz.hu/#sending-a-receipt
 func (a *Agent) SendReceipt(req Xmlnyugtasend) (Xmlnyugtasendvalasz, error) {
 
 	// hardcoded fields
@@ -299,7 +299,7 @@ func (a *Agent) SendReceipt(req Xmlnyugtasend) (Xmlnyugtasendvalasz, error) {
 }
 
 // QueryTaxpayer requests taxpayer information from NAV via szamlazz.hu
-// https://docs.szamlazz.hu/#querying-taxpayers
+// http://docs.szamlazz.hu/#querying-taxpayers
 func (a *Agent) QueryTaxpayer(req Xmltaxpayer) (QueryTaxpayerResponse, error) {
 
 	// hardcoded fields
@@ -337,7 +337,7 @@ const (
 var agentresponseRegex = regexp.MustCompile(`^\s*xmlagentresponse=(.+?)\s*$`)
 
 // SupplierAccount creates or requests access to a supplier's szamlazz.hu account
-// https://docs.szamlazz.hu/#self-billing
+// http://docs.szamlazz.hu/#self-billing
 func (a *Agent) SupplierAccount(req Xmlcegmb) (SupplierStatus, error) {
 	// Possible text responses found by us:
 	// xmlagentresponse=DONE
@@ -378,7 +378,7 @@ func (a *Agent) SupplierAccount(req Xmlcegmb) (SupplierStatus, error) {
 }
 
 // apiEndpoint is the szamlazz.hu API URL
-const apiEndpoint = "https://www.szamlazz.hu/szamla/"
+const apiEndpoint = "http://www.szamlazz.hu/szamla/"
 
 // postAsFile will uploads a file as HTTP web form file upload
 func (a *Agent) postAsFile(field string, filename string, data []byte) ([]byte, error) {
